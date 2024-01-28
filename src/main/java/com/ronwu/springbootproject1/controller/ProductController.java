@@ -1,6 +1,7 @@
 package com.ronwu.springbootproject1.controller;
 
 import com.ronwu.springbootproject1.constant.ProductCategory;
+import com.ronwu.springbootproject1.util.Page;
 import com.ronwu.springbootproject1.dto.ProductQueryParams;
 import com.ronwu.springbootproject1.dto.ProductRequest;
 import com.ronwu.springbootproject1.model.Product;
@@ -23,7 +24,7 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts(
+    public ResponseEntity<Page<Product>> getProducts(
             //查詢條件 Filtering
             @RequestParam(required = false) ProductCategory category,
             @RequestParam(required = false) String search,
@@ -43,8 +44,17 @@ public class ProductController {
         productQueryParams.setLimit(limit);
         productQueryParams.setOffset(offset);
 
+        //取得product list
         List<Product> productList = productService.getProducts(productQueryParams);
-        return ResponseEntity.status(HttpStatus.OK).body(productList);
+        //取得product總數
+        Integer total = productService.countProduct(productQueryParams);
+        //分頁
+        Page<Product> page = new Page<>();
+        page.setLimit(limit);
+        page.setOffset(offset);
+        page.setTotal(null);
+        page.setResults(productList);
+        return ResponseEntity.status(HttpStatus.OK).body(page);
 
     }
 
