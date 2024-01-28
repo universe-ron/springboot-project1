@@ -1,5 +1,6 @@
 package com.ronwu.springbootproject1.controller;
 
+import com.ronwu.springbootproject1.constant.ProductCategory;
 import com.ronwu.springbootproject1.dto.ProductRequest;
 import com.ronwu.springbootproject1.model.Product;
 import com.ronwu.springbootproject1.service.ProductService;
@@ -18,8 +19,11 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts(){
-        List<Product> productList = productService.getProducts();
+    public ResponseEntity<List<Product>> getProducts(
+            @RequestParam(required = false) ProductCategory category,
+            @RequestParam(required = false) String search
+    ){
+        List<Product> productList = productService.getProducts(category,search;
         return ResponseEntity.status(HttpStatus.OK).body(productList);
 
     }

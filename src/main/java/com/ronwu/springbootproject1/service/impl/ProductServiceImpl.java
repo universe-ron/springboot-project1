@@ -1,5 +1,6 @@
 package com.ronwu.springbootproject1.service.impl;
 
+import com.ronwu.springbootproject1.constant.ProductCategory;
 import com.ronwu.springbootproject1.dao.ProductDao;
 import com.ronwu.springbootproject1.dto.ProductRequest;
 import com.ronwu.springbootproject1.model.Product;
@@ -16,8 +17,8 @@ public class ProductServiceImpl implements ProductService {
     private ProductDao productDao;
 
     @Override
-    public List<Product> getProducts() {
-        return productDao.getProducts();
+    public List<Product> getProducts(ProductCategory category,String search) {
+        return productDao.getProducts(category,search);
     }
 
     @Override
