@@ -1,6 +1,7 @@
 package com.ronwu.springbootproject1.controller;
 
 
+import com.ronwu.springbootproject1.dto.UserLoginRequest;
 import com.ronwu.springbootproject1.dto.UserRegisterRequest;
 import com.ronwu.springbootproject1.model.User;
 import com.ronwu.springbootproject1.service.UserService;
@@ -26,6 +27,11 @@ public class UserController {
         User user = userService.getUserById(userId);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
+    @PostMapping("/users/login")
+    public ResponseEntity<User> login(@RequestBody @Valid UserLoginRequest userLoginRequest){
+        User user = userService.login(userLoginRequest);
 
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
 
 }
