@@ -2,6 +2,7 @@ package com.ronwu.springbootproject1.service.impl;
 
 import com.ronwu.springbootproject1.dao.UserDao;
 import com.ronwu.springbootproject1.dto.UserLoginRequest;
+
 import com.ronwu.springbootproject1.dto.UserRegisterRequest;
 import com.ronwu.springbootproject1.model.User;
 import com.ronwu.springbootproject1.service.UserService;
@@ -34,7 +35,9 @@ public class UserServiceImpl implements UserService {
             log.warn("該 email{}已經被註冊",userRegisterRequest.getEmail());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
-
+        //使用MD5g生成密碼的雜湊值
+        String hashedPassword = DigestUtils.md5DigestAsHex(userRegisterRequest.getPassword().getBytes());
+        userRegisterRequest.setPassword((hashedPassword));
         //創建帳號
         return userDao.createUser(userRegisterRequest);
     }
