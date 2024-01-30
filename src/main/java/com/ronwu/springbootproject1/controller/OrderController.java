@@ -1,6 +1,7 @@
 package com.ronwu.springbootproject1.controller;
 
 import com.ronwu.springbootproject1.dto.CreateOrderRequest;
+import com.ronwu.springbootproject1.model.Order;
 import com.ronwu.springbootproject1.service.OrderService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -22,6 +23,7 @@ public class OrderController {
     public ResponseEntity<?> createOrder(@PathVariable Integer userId,
                                          @RequestBody @Valid CreateOrderRequest createOrderRequest){
         Integer orderId = orderService.createOrder(userId,createOrderRequest);
+        Order order = orderService.getOrderById(orderId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(userId);
 
