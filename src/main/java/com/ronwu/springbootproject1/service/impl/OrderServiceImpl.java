@@ -5,6 +5,7 @@ import com.ronwu.springbootproject1.dao.ProductDao;
 import com.ronwu.springbootproject1.dao.UserDao;
 import com.ronwu.springbootproject1.dto.BuyItem;
 import com.ronwu.springbootproject1.dto.CreateOrderRequest;
+import com.ronwu.springbootproject1.dto.OrderQueryParams;
 import com.ronwu.springbootproject1.model.Order;
 import com.ronwu.springbootproject1.model.OrderItem;
 import com.ronwu.springbootproject1.model.Product;
@@ -36,6 +37,21 @@ public class OrderServiceImpl  implements OrderService {
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    public Integer countOrder(OrderQueryParams orderQueryParams){
+        return orderDao.countOrder(orderQueryParams);
+    }
+
+    public List<Order> getOrders(OrderQueryParams orderQueryParams){
+        List<Order> orderList = orderDao.getOrders(orderQueryParams);
+
+        for(Order order:orderList){
+            List<OrderItem> orderItemList = orderDao.getOrderItemsByOrderId(order.getOrderId());
+            order.setOrderItemList(orderItemList);
+        }
+        return orderList;
+    }
+
     @Override
     public Order getOrderById(Integer orderId) {
         Order order = orderDao.getOrderById(orderId);
@@ -64,7 +80,7 @@ public class OrderServiceImpl  implements OrderService {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
             }
             //扣除商品庫存
-            productDao.updateStock(product.getProductId(),product.getStock()-buyItem.getQuantity();
+            productDao.updateStock(product.getProductId(),product.getStock()-buyItem.getQuantity());
 
 
             //計算總價錢
